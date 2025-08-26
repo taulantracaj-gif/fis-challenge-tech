@@ -28,32 +28,7 @@ spec:
           containerPort: 443
         env:
         - name: APP_NAME
-          value: "NodeAppReplica"
-        # - name: Core_Database_Name
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: onedsecretsmaindbs
-        #       key: sitecore-core-database-name
-        # livenessProbe:
-        #   httpGet:
-        #     path: /healthz/live
-        #     port: 80
-        #     httpHeaders:
-        #     - name: X-Kubernetes-Probe
-        #       value: Liveness
-        #   timeoutSeconds: 3000
-        #   periodSeconds: 30
-        #   failureThreshold: 5
-        # startupProbe:
-        #   httpGet:
-        #     path: /healthz/ready
-        #     port: 80
-        #     httpHeaders:
-        #     - name: X-Kubernetes-Probe
-        #       value: Startup
-        #   timeoutSeconds: 3000
-        #   periodSeconds: 30
-        #   failureThreshold: 180         
+          value: "NodeAppReplica"       
         resources:
           requests:
             memory: "128Mi"
