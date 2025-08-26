@@ -1,0 +1,8 @@
+---
+- name: Configure RedHat servers only
+  hosts: redhat_servers
+  become: yes
+  gather_facts: yes
+  roles:
+    - common
+    - mariadb

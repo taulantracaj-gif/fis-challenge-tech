@@ -1,0 +1,23 @@
+---
+- name: Apply common configuration to all servers
+  hosts: all
+  become: yes
+  gather_facts: yes
+  roles:
+    - common
+
+- name: Configure Apache on Ubuntu servers
+  hosts: ubuntu_servers
+  become: yes
+  gather_facts: yes
+  roles:
+    - apache
+
+- name: Configure MariaDB on RedHat servers
+  hosts: redhat_servers
+  become: yes
+  gather_facts: yes
+  roles:
+    - mariadb
+  vars_files:
+    - ../group_vars/redhat_servers/vault.yml

@@ -1,0 +1,28 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nodejs-app-down
+spec:
+  minReplicas: MinReplicas_VAR
+  maxReplicas: MaxReplicas_VAR
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: ScaleDownCpuUtilization_VAR
+          #averageValue: ScaleDownCpuUtilization_VAR
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: ScaleDownMemoryUtilization_VAR
+          #averageValue: ScaleDownMemoryUtilization_VAR
+  behavior:
+    scaleDown:
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: ScaleDownStabilizationMinutes_VAR

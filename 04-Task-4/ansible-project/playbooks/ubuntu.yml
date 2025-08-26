@@ -1,0 +1,8 @@
+---
+- name: Configure Ubuntu servers only
+  hosts: ubuntu_servers
+  become: yes
+  gather_facts: yes
+  roles:
+    - common
+    - apache

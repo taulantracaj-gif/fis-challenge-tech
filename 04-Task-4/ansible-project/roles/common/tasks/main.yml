@@ -1,0 +1,11 @@
+---
+- name: Include gather facts tasks
+  include_tasks: gather_facts.yml
+
+- name: Include Ubuntu update tasks
+  include_tasks: update_ubuntu.yml
+  when: ansible_os_family == "Debian"
+
+- name: Include RedHat update tasks
+  include_tasks: update_redhat.yml
+  when: ansible_os_family == "RedHat"

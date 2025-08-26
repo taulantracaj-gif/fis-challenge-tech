@@ -1,0 +1,14 @@
+---
+mariadb_port: 3306
+mariadb_datadir: /var/lib/mysql
+mariadb_socket: /var/lib/mysql/mysql.sock
+# MariaDB settings
+mariadb_packages:
+  - mariadb-server
+  - mariadb
+mariadb_service: mariadb
+mariadb_root_password: {{ vault_mariadb_root_password }} #SecurePassword123!
+mariadb_databases:
+  - name: ansible_demo_db
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci

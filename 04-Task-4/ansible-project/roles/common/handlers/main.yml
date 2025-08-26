@@ -1,0 +1,10 @@
+---
+- name: reboot if required
+  reboot:
+    msg: "Rebooting due to package updates"
+    connect_timeout: 5
+    reboot_timeout: 300
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: ansible_reboot_required is defined and ansible_reboot_required

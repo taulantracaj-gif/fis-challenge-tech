@@ -1,0 +1,21 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nodejs-app-memory
+spec:
+  minReplicas: MinReplicas_VAR
+  maxReplicas: MaxReplicas_VAR
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: ScaleUpMemoryUtilization_VAR
+          #averageValue: ScaleUpMemoryUtilization_VAR
+  behavior:
+    scaleUp:
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: ScaleUpStabilizationMinutes_VAR

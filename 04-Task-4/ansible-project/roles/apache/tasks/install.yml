@@ -1,0 +1,39 @@
+---
+- name: Install Apache2 on Ubuntu
+  apt:
+    name: "{{ apache_package }}"
+    state: present
+    update_cache: yes
+
+- name: Create Hello World HTML page from template
+  template:
+    src: index.html.j2
+    dest: "{{ apache_document_root }}/{{ apache_index_file }}"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_group }}"
+    mode: '0644'
+  notify: restart apache
+  
+- name: Ensure Apache is running and enabled
+  systemd:
+    name: "{{ apache_service }}"
+    state: started
+    enabled: yes
+
+- name: Allow Apache through UFW firewall (if enabled)
+  ufw:
+    rule: allow
+    name: 'Apache Full'
+  ignore_errors: yes
+
+- name: Test Apache is responding locally
+  uri:
+    url: "http://localhost"
+    method: GET
+    status_code: 200
+  register: apache_test
+
+- name: Display Apache status
+  debug:
+    msg: "✅ Apache is running and responding on {{ ansible_hostname }} ({{ ansible_default_ipv4.address }})"
+  when: apache_test.status == 200

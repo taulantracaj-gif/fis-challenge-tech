@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World - {{ ansible_hostname }}</title>
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 60px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            max-width: 600px;
+        }
+        h1 { 
+            font-size: 4em; 
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+            to { text-shadow: 2px 2px 20px rgba(255,255,255,0.5), 0 0 30px rgba(255,255,255,0.3); }
+        }
+        p { 
+            font-size: 1.4em; 
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .info-box { 
+            background: rgba(255,255,255,0.2); 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-top: 40px;
+            border-left: 5px solid #fff;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        .label { font-weight: bold; }
+        .value { font-family: 'Courier New', monospace; }
+        .success { 
+            color: #4CAF50; 
+            font-weight: bold; 
+            font-size: 1.2em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Hello World! 🎉</h1>
+        <p class="success">✅ Apache Successfully Configured via Ansible!</p>
+        <p>This page is served by Apache on Ubuntu, deployed automatically using Ansible roles.</p>
+        
+        <div class="info-box">
+            <h3>🖥️ Server Information</h3>
+            <div class="info-item">
+                <span class="label">Hostname:</span>
+                <span class="value">{{ ansible_hostname }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Operating System:</span>
+                <span class="value">{{ ansible_distribution }} {{ ansible_distribution_version }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Private IP:</span>
+                <span class="value">{{ ansible_default_ipv4.address }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Architecture:</span>
+                <span class="value">{{ ansible_architecture }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Deployed:</span>
+                <span class="value">{{ ansible_date_time.iso8601 }}</span>
+            </div>
+        </div>
+        
+        <p style="margin-top: 40px; font-size: 1.1em; opacity: 0.9;">
+            🚀 Powered by Ansible Roles
+        </p>
+    </div>
+</body>
+</html>

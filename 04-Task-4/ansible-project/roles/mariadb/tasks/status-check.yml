@@ -1,0 +1,19 @@
+---
+- name: Check MariaDB status
+  shell: systemctl is-active mariadb
+  register: mariadb_status
+  changed_when: false
+
+- name: Display MariaDB status
+  debug:
+    msg: "✅ MariaDB is {{ mariadb_status.stdout }} on {{ ansible_hostname }} ({{ ansible_default_ipv4.address }})"
+
+- name: Show MariaDB version
+  shell: mysql --version
+  register: mariadb_version
+  changed_when: false
+
+- name: Display MariaDB version
+  debug:
+    msg: "📊 {{ mariadb_version.stdout }}"
+    

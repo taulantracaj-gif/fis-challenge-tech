@@ -1,0 +1,95 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nodejs-app-up-cpu
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nodejs-app
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+          #averageValue: 2400m 
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 1200
+    scaleDown:
+      selectPolicy: Disabled
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nodejs-app-up-memory
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nodejs-app
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 60
+          #averageValue: 10Gi
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 1200
+    scaleDown:
+      selectPolicy: Disabled
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nodejs-app-down
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nodejs-ap
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 35
+          #averageValue: 1200m
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 35
+          #averageValue: 5Gi
+  behavior:
+    scaleUp:
+      selectPolicy: Disabled
+    scaleDown:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 1200

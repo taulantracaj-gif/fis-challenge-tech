@@ -1,0 +1,21 @@
+---
+- name: Ensure Python 3 and pip are installed on RedHat
+  yum:
+    name: python3-pip
+    state: present
+
+- name: Install PyMySQL for Ansible MySQL modules
+  pip:
+    name: PyMySQL
+    executable: pip3
+
+- name: Install MariaDB packages
+  yum:
+    name: "{{ mariadb_packages }}"
+    state: present
+
+- name: Start and enable MariaDB service
+  systemd:
+    name: "{{ mariadb_service }}"
+    state: started
+    enabled: yes

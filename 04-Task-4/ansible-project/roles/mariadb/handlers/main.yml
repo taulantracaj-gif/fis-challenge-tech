@@ -1,0 +1,10 @@
+---
+- name: restart mariadb
+  systemd:
+    name: "{{ mariadb_service }}"
+    state: restarted
+
+- name: start mariadb
+  systemd:
+    name: "{{ mariadb_service }}"
+    state: started

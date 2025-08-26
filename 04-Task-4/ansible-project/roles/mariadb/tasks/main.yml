@@ -1,0 +1,12 @@
+---
+- name: Include MariaDB installation tasks
+  include_tasks: install.yml
+
+- name: Include MariaDB configuration tasks
+  include_tasks: configure.yml
+
+- name: Include database setup tasks
+  include_tasks: database.yml
+
+- name: Display MariaDB status
+  include_tasks: status-check.yml

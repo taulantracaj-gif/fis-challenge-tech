@@ -1,0 +1,55 @@
+---
+- name: Create databases
+  mysql_db:
+    name: "{{ item.name }}"
+    encoding: "{{ item.encoding | default('utf8mb4') }}"
+    collation: "{{ item.collation | default('utf8mb4_general_ci') }}"
+    login_user: root
+    login_password: "{{ vault_mariadb_root_password }}"
+    state: present
+  loop: "{{ mariadb_databases }}"
+  ignore_errors: yes
+
+- name: Create test table with sample data
+  mysql_query:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    login_db: ansible_demo_db
+    query: |
+      CREATE TABLE IF NOT EXISTS servers (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        hostname VARCHAR(100),
+        ip_address VARCHAR(15),
+        os_family VARCHAR(50),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+  ignore_errors: yes
+
+- name: Insert sample data into table
+  mysql_query:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    login_db: ansible_demo_db
+    query: |
+      INSERT INTO servers (hostname, ip_address, os_family)
+      VALUES ('{{ ansible_hostname }}', '{{ ansible_default_ipv4.address }}', '{{ ansible_os_family }}')
+      ON DUPLICATE KEY UPDATE hostname=VALUES(hostname);
+  ignore_errors: yes
+
+- name: Check MariaDB status
+  shell: systemctl is-active {{ mariadb_service }}
+  register: mariadb_status
+  changed_when: false
+
+- name: Display MariaDB status
+  debug:
+    msg: "✅ MariaDB is {{ mariadb_status.stdout }} on {{ ansible_hostname }} ({{ ansible_default_ipv4.address }})"
+
+- name: Show MariaDB version
+  shell: mysql --version
+  register: mariadb_version
+  changed_when: false
+
+- name: Display MariaDB version
+  debug:
+    msg: "📊 {{ mariadb_version.stdout }}"

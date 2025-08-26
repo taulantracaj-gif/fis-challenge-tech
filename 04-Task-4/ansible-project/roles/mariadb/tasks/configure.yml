@@ -1,0 +1,32 @@
+---
+- name: Check if MariaDB root password is already set
+  shell: mysql -u root -e "SELECT 1;" 
+  register: mysql_root_check
+  failed_when: false
+  changed_when: false
+
+- name: Secure MariaDB installation - Set root password
+  mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    login_unix_socket: "{{ mariadb_socket }}"
+    state: present
+  when: mysql_root_check.rc == 0
+  ignore_errors: yes
+
+- name: Remove anonymous users
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+  ignore_errors: yes
+
+- name: Allow MariaDB through firewall (if firewalld is active)
+  firewalld:
+    service: mysql
+    permanent: true
+    state: enabled
+    immediate: true
+  ignore_errors: yes

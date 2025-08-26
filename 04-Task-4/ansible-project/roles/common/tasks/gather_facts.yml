@@ -1,0 +1,19 @@
+---
+- name: Display system information
+  debug:
+    msg: |
+      =================================
+      Server: {{ inventory_hostname }}
+      Hostname: {{ ansible_hostname }}
+      OS Family: {{ ansible_os_family }}
+      Distribution: {{ ansible_distribution }}
+      Version: {{ ansible_distribution_version }}
+      Architecture: {{ ansible_architecture }}
+      Private IP: {{ ansible_default_ipv4.address }}
+      =================================
+
+- name: Install common packages
+  package:
+    name: "{{ common_packages }}"
+    state: present
+  when: common_packages is defined

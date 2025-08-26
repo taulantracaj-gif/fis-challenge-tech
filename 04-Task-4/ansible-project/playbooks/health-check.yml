@@ -1,0 +1,47 @@
+---
+- name: Health Check All Servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check system uptime
+      command: uptime
+      register: uptime_result
+
+    - name: Display uptime
+      debug:
+        msg: "{{ inventory_hostname }} - {{ uptime_result.stdout }}"
+
+    - name: Check disk usage
+      shell: df -h / | tail -1
+      register: disk_usage
+
+    - name: Display disk usage
+      debug:
+        msg: "{{ inventory_hostname }} - Root disk: {{ disk_usage.stdout }}"
+
+- name: Check Apache Status
+  hosts: ubuntu_servers
+  become: yes
+  tasks:
+    - name: Check Apache status
+      uri:
+        url: "http://{{ ansible_default_ipv4.address }}"
+        return_content: no
+      register: apache_check
+
+    - name: Display Apache status
+      debug:
+        msg: "Apache on {{ inventory_hostname }}: HTTP {{ apache_check.status }}"
+
+- name: Check MariaDB Status
+  hosts: redhat_servers
+  become: yes
+  tasks:
+    - name: Check MariaDB status
+      shell: systemctl is-active mariadb
+      register: mariadb_status
+      changed_when: false
+
+    - name: MariaDB status
+      debug:
+        msg: "MariaDB on {{ inventory_hostname }}: {% if mariadb_status.stdout == 'active' %}Running{% else %}Not running ({{ mariadb_status.stdout }}){% endif %}"

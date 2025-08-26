@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  labels:
+    app: nodejs-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      terminationGracePeriodSeconds: 100
+      containers:
+      - name: nodejs-app
+        image: nodejs-app
+        imagePullPolicy: Never #remove it for azure
+        ports:
+        - name: http
+          containerPort: 3000
+        - name: https
+          containerPort: 443
+        env:
+        - name: APP_NAME
+          value: "NodeAppReplica"
+        # - name: Core_Database_Name
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: onedsecretsmaindbs
+        #       key: sitecore-core-database-name
+        # livenessProbe:
+        #   httpGet:
+        #     path: /healthz/live
+        #     port: 80
+        #     httpHeaders:
+        #     - name: X-Kubernetes-Probe
+        #       value: Liveness
+        #   timeoutSeconds: 3000
+        #   periodSeconds: 30
+        #   failureThreshold: 5
+        # startupProbe:
+        #   httpGet:
+        #     path: /healthz/ready
+        #     port: 80
+        #     httpHeaders:
+        #     - name: X-Kubernetes-Probe
+        #       value: Startup
+        #   timeoutSeconds: 3000
+        #   periodSeconds: 30
+        #   failureThreshold: 180         
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"          
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true

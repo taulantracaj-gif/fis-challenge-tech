@@ -1,0 +1,15 @@
+---
+- name: Update package repositories (RedHat)
+  yum:
+    update_cache: yes
+  register: redhat_update
+
+- name: Upgrade all packages (RedHat)
+  yum:
+    name: "*"
+    state: latest
+  register: redhat_upgrade
+
+- name: Display upgrade results (RedHat)
+  debug:
+    msg: "RedHat packages upgraded. Changed: {{ redhat_upgrade.changed }}"

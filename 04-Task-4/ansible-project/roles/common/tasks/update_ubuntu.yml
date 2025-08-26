@@ -1,0 +1,17 @@
+---
+- name: Update package repositories (Ubuntu/Debian)
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  register: ubuntu_update
+
+- name: Upgrade all packages (Ubuntu/Debian)
+  apt:
+    upgrade: dist
+    autoremove: yes
+    autoclean: yes
+  register: ubuntu_upgrade
+
+- name: Display upgrade results (Ubuntu)
+  debug:
+    msg: "Ubuntu packages upgraded. Changed: {{ ubuntu_upgrade.changed }}"

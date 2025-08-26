@@ -1,0 +1,20 @@
+# add variables
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: nodejs-app
+        resources:
+          requests:
+            memory: RequestsMemory_VAR
+            cpu: RequestsCpu_VAR
+          limits:
+            memory: LimitMemory_VAR
+            cpu: LimitCpu_VAR
+        env:
+        - name: APP_NAME
+          value: APP_NAME_VAR

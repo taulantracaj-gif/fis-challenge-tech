@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deploy.yaml
+patches:
+- target:
+    kind: HorizontalPodAutoscaler
+    name: nodejs-app-up-cpu
+  path: patch-nodejs-app-up-cpu.yaml
+- target:
+    kind: HorizontalPodAutoscaler
+    name: nodejs-app-memory
+  path: patch-nodejs-app-up-memory.yaml
+- target:
+    kind: HorizontalPodAutoscaler
+    name: nodejs-app-down
+  path: patch-nodejs-app-down.yaml

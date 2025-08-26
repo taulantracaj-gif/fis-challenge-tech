@@ -1,0 +1,15 @@
+---
+# RedHat-specific variables
+package_manager: yum
+mariadb_service: mariadb
+mariadb_packages:
+  - mariadb-server
+  - mariadb
+  - python3-pip
+
+# MariaDB configuration
+mariadb_root_password: {{ vault_mariadb_root_password }} #"SecurePassword123!"
+mariadb_databases:
+  - name: ansible_demo_db
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
